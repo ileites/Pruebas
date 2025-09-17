@@ -429,6 +429,7 @@ async function saveEditedProduct() {
     // ✅ Obtener el rol del usuario actual
     const userRole = sessionStorage.getItem('userRole');
     const isUserAdmin = userRole === 'admin';
+    const userName = sessionStorage.getItem('userName') || 'Desconocido';
 
     // ✅ Obtener la cantidad actual del producto desde la variable global 'stock'
     const currentProduct = stock[name];
@@ -463,7 +464,8 @@ async function saveEditedProduct() {
         if (difference !== 0) {
             try {
                 const movementType = difference > 0 ? 'Entrada' : 'Salida';
-                const movementDescription = difference > 0 ? 'Ajuste de stock (aumento)' : 'Ajuste de stock (reducción)';
+                const movementDescription = difference > 0 ? 'Ajuste de stock (aumento) (por ${userName})
+                    ' : 'Ajuste de stock (reducción) (por ${userName})';
                 const { error: movementError } = await supabase
                     .from('movements')
                     .insert({
